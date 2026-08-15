@@ -33,6 +33,9 @@ const STREAMING_ATTR = 'data-streaming'
 /** Style tag identity. */
 const CSS_ID = '@dsh-external/dsh-client-ui-chunk-mode/style'
 
+/** Displayed plugin version (shown in the settings popover for cache checks). */
+const PLUGIN_VERSION = '0.2.4'
+
 /** Default configuration. */
 const DEFAULTS = { enabled: false, interval: 380, bubbles: false, maxChars: 0 }
 
@@ -254,7 +257,7 @@ function ChunkModeToggle() {
         h(
           'div',
           { className: 'dshcm-hint' },
-          '开启后回复按句拆开，每句一个气泡，逐条浮现。超过「最大断句长度」的回复（如工具说明、长报告）整段显示。',
+          '开启后回复按句拆开逐条浮现。最大断句长度 0 = 不限制（默认，含总结/长文都断句）。dsh-chunk-mode v' + PLUGIN_VERSION,
         ),
       ),
   )
