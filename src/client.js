@@ -34,7 +34,7 @@ const STREAMING_ATTR = 'data-streaming'
 const CSS_ID = '@dsh-external/dsh-client-ui-chunk-mode/style'
 
 /** Displayed plugin version (shown in the settings popover for cache checks). */
-const PLUGIN_VERSION = '0.2.4'
+const PLUGIN_VERSION = '0.2.5'
 
 /** Default configuration. */
 const DEFAULTS = { enabled: false, interval: 380, bubbles: false, maxChars: 0 }
@@ -123,7 +123,33 @@ const STYLE_TEXT = `
   display:flex;flex-direction:column;gap:9px;
 }
 .dshcm-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dsw-alias-label-primary, #222);cursor:default}
-.dshcm-row input[type=range]{flex:1;min-width:0}
+.dshcm-row input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  flex:1;min-width:0;height:18px;margin:0;padding:0;
+  background:transparent;cursor:pointer;
+}
+.dshcm-row input[type=range]::-webkit-slider-runnable-track{
+  height:4px;border-radius:2px;
+  background:color-mix(in srgb, var(--dsw-alias-label-primary, #222) 25%, transparent);
+}
+.dshcm-row input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:15px;height:15px;margin-top:-5.5px;border-radius:50%;
+  background:var(--dsw-alias-button-info-fill, #4f8cff);
+  border:2px solid var(--dsw-alias-bg-base, #fff);
+  box-shadow:0 1px 4px rgba(0,0,0,.35);
+}
+.dshcm-row input[type=range]::-moz-range-track{
+  height:4px;border-radius:2px;
+  background:color-mix(in srgb, var(--dsw-alias-label-primary, #222) 25%, transparent);
+}
+.dshcm-row input[type=range]::-moz-range-thumb{
+  width:13px;height:13px;border-radius:50%;
+  background:var(--dsw-alias-button-info-fill, #4f8cff);
+  border:2px solid var(--dsw-alias-bg-base, #fff);
+  box-shadow:0 1px 4px rgba(0,0,0,.35);
+}
+.dshcm-row input[type=range]:focus-visible{outline:2px solid var(--dsw-alias-button-info-fill, #4f8cff);outline-offset:2px;border-radius:4px}
 .dshcm-ms{min-width:44px;text-align:right;color:var(--dsw-alias-label-secondary, #888);font-variant-numeric:tabular-nums}
 .dshcm-hint{font-size:11px;color:var(--dsw-alias-label-tertiary, #999);line-height:1.5}
 .dshcm-sentence{margin:2px 0;white-space:pre-wrap;overflow-wrap:anywhere;animation:dshcm-fade .28s ease-out}
