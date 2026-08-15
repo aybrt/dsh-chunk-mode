@@ -34,7 +34,7 @@ const STREAMING_ATTR = 'data-streaming'
 const CSS_ID = '@dsh-external/dsh-client-ui-chunk-mode/style'
 
 /** Default configuration. */
-const DEFAULTS = { enabled: false, interval: 380, bubbles: false, maxChars: 240 }
+const DEFAULTS = { enabled: false, interval: 380, bubbles: false, maxChars: 0 }
 
 // ---------------------------------------------------------------------------
 // config (module-level mirror so the non-React engine reads live state)
@@ -218,14 +218,14 @@ function ChunkModeToggle() {
           '最大断句长度',
           h('input', {
             type: 'range',
-            min: 80,
+            min: 0,
             max: 2000,
-            step: 20,
+            step: 50,
             value: cfg.maxChars,
-            title: '超过此长度的回复整段显示，不逐句',
+            title: '0 = 不限制，所有纯文本都断句；设为上限后，超过该长度的回复整段显示',
             onChange: (event) => update({ maxChars: Number(event.target.value) }),
           }),
-          h('span', { className: 'dshcm-ms' }, cfg.maxChars + '字'),
+          h('span', { className: 'dshcm-ms' }, cfg.maxChars === 0 ? '不限制' : cfg.maxChars + '字'),
         ),
         h(
           'label',
@@ -341,8 +341,9 @@ function handleAssistant(el) {
   const body = el.firstElementChild ?? el
   const text = body.innerText ?? ''
 
-  // Long blocks (tool-call narration, reports, explanations) stay whole —
-  // sentence-by-sentence only fits short conversational replies.
+  // Optional length cap: when maxChars > 0, blocks longer than it stay whole
+  // (useful to spare tool-call narration / reports). Default 0 = unlimited:
+  // every plain-text reply is split, including long summaries.
   if (cfg.maxChars > 0 && text.length > cfg.maxChars) return
 
   const sentences = splitSentences(text)
