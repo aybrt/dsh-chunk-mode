@@ -9,9 +9,12 @@
 
 ## 效果
 
-- 输入栏工具行新增「断句」开关，一键启停，状态本地持久化。
-- 开启后，助手回复里的**纯文本消息**按 `。！？!?；;` 与换行切句，
-  每句间隔约 380ms 逐条淡入。
+- 输入栏工具行新增「断句」开关 + 「▾」设置，一键启停，状态本地持久化。
+- 开启后，助手回复里的**纯文本消息**按句切分，逐条浮现：
+  - **句间隔可调**：设置浮层里 100–1000ms 滑块（默认 380ms）。
+  - **两种播放风格**：
+    - 默认：句子在同一消息块内逐句淡入；
+    - 独立气泡：拆成多个圆角气泡（微信式），逐条弹出。
 - 含代码块 / 图片 / 链接 / 表格的消息保持原样，不做切分（避免破坏渲染）。
 - 关闭开关时，正在播放的消息立即恢复完整内容。
 
@@ -24,7 +27,7 @@ dsh plugin --profile web add link:/绝对/路径/dsh-chunk-mode
 # 重启 dsh web，输入栏左侧出现「断句」按钮
 ```
 
-> 也可以 `dsh plugin --profile web add github:<你的用户名>/dsh-chunk-mode`。
+> 也可以 `dsh plugin --profile web add github:aybrt/dsh-chunk-mode`。
 
 ## 工作原理
 
@@ -33,23 +36,25 @@ dsh plugin --profile web add link:/绝对/路径/dsh-chunk-mode
 - **开关**：注册进 `conversation.input.left` slot（输入栏工具行）。
 - **逐句播放**：MutationObserver 监听 assistant 消息根元素的
   `data-streaming` 属性（ui-conversation 的稳定契约）——流式结束后，
-  对纯文本消息按句切分，逐句淡入重建。
+  对纯文本消息按句切分，逐句重建。
+
+### 切句规则
+
+- 句末标点：`。！？；!?;…`（中日英通用）直接切分。
+- 英文句点 `.` 仅在后面跟空白/结尾/引号时切分，因此 `3.14`、`v1.2`
+  这类数字/版本号不会被误切；`e.g.` 这类缩写后接空格仍会切开（已知折中）。
+- 结尾引号/括号（`」』"'）)`）归入前一句。
+- 换行按段落边界切分。
 
 ## 结构
 
 ```
 dsh-chunk-mode/
 ├── lib/index.js      # host 半（空实现，占位）
-├── lib/client.js     # 浏览器半：开关 + 逐句播放引擎
+├── lib/client.js     # 浏览器半：开关 + 设置浮层 + 播放引擎 + 切句算法
 ├── cordis.patch.yml  # 把 ui-dsh-chunk-mode 行插入 web profile 名册
 └── package.json      # dsh.bundle + dsh.client 声明
 ```
-
-## 后续想法
-
-- [ ] 可配置的句间隔
-- [ ] 拆成多个独立气泡（更贴近微信式对话）
-- [ ] 英文/其他语言标点细化
 
 ## License
 
