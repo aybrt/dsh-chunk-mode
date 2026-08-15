@@ -1,7 +1,7 @@
 {
   "name": "@dsh-external/dsh-client-ui-chunk-mode",
   "description": "断句模式：AI 回复按标点切句、逐句浮现（可调间隔 / 微信式独立气泡 / 多语言标点），营造更自然的对话体验。浏览器端插件，输入栏一键启停。",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "main": "lib/index.js",
