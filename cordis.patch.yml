@@ -1,0 +1,8 @@
+# dsh-chunk-mode bundle patch: inserts the browser-half plugin row into the
+# web profile roster. The node half (exports ".") is inert; the `dsh.client`
+# declaration in package.json serves the browser half (exports "./client") at
+# /plugins/ui-dsh-chunk-mode/client.js in the web GUI.
+# Install with: dsh plugin --profile web add link:<this-directory>
+- insert:
+    - id: ui-dsh-chunk-mode
+      name: '@dsh-external/dsh-client-ui-chunk-mode'
