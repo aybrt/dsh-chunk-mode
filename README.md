@@ -50,11 +50,29 @@ dsh plugin --profile web add link:/绝对/路径/dsh-chunk-mode
 
 ```
 dsh-chunk-mode/
-├── lib/index.js      # host 半（空实现，占位）
-├── lib/client.js     # 浏览器半：开关 + 设置浮层 + 播放引擎 + 切句算法
-├── cordis.patch.yml  # 把 ui-dsh-chunk-mode 行插入 web profile 名册
-└── package.json      # dsh.bundle + dsh.client 声明
+├── src/client.js      # 浏览器半源码（ESM，人类可读）
+├── lib/client.js      # 浏览器半构建产物（__ModuleLoader__ 格式，勿手改）
+├── lib/index.js       # host 半（空实现，占位）
+├── build-patch.cjs    # 构建脚本：src/client.js → lib/client.js
+├── verify-build.cjs   # 校验脚本：模拟 ModuleLoader 验证产物导出
+├── cordis.patch.yml   # 把 ui-dsh-chunk-mode 行插入 web profile 名册
+└── package.json       # dsh.bundle + dsh.client 声明
 ```
+
+## 开发
+
+> ⚠️ DSH web 端**不做构建**：浏览器执行的必须是 `__ModuleLoader__.load`
+> 格式的 bundle，裸 ESM 源码 serve 出去会报
+> "loaded without registering ... via ModuleLoader.load"。
+
+改完 `src/client.js` 后：
+
+```sh
+node build-patch.cjs   # 生成 lib/client.js
+node verify-build.cjs  # 模拟 ModuleLoader 校验产物（PASS 才能提交）
+```
+
+`src/client.js` 与 `lib/client.js` **都要提交**。
 
 ## License
 

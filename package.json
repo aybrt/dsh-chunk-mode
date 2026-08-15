@@ -29,8 +29,13 @@
   },
   "files": [
     "lib",
+    "src",
     "cordis.patch.yml",
     "README.md"
   ],
+  "scripts": {
+    "build": "node build-patch.cjs",
+    "verify": "node verify-build.cjs"
+  },
   "license": "MIT"
 }

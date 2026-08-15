@@ -1,5 +1,3 @@
-window.__ModuleLoader__.load({id:"@dsh-external/dsh-client-ui-chunk-mode",factory:(require)=>{
-var module={exports:{}};var exports=module.exports;
 /**
  * 断句模式 (chunk mode) — browser half.
  *
@@ -24,7 +22,8 @@ var module={exports:{}};var exports=module.exports;
  * @module dsh-chunk-mode/client
  */
 
-const { createElement: h, useState, useEffect, useRef } = require('react');
+import { createElement as h, useState, useEffect, useRef } from 'react'
+
 /** localStorage key for the whole config. */
 const CONFIG_KEY = 'dsh-chunk-mode:config'
 /** Legacy single-switch key (v0.1.0) kept for migration. */
@@ -422,10 +421,10 @@ function onMutation(mutations) {
 // ---------------------------------------------------------------------------
 
 /** Required services: the slot registry (client-runtime). */
-const inject = ['slots']
+export const inject = ['slots']
 
 /** Apply the browser half. */
-function apply(ctx) {
+export function apply(ctx) {
   ctx.effect(() => {
     ensureStyle()
     const disposers = []
@@ -460,8 +459,3 @@ function apply(ctx) {
     }
   }, 'dsh-chunk-mode: wiring')
 }
-
-exports.inject = inject;
-exports.apply = apply;
-return module.exports;
-}});
